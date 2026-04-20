@@ -3026,12 +3026,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clickhouse/client-web@npm:^1.12.1":
-  version: 1.12.1
-  resolution: "@clickhouse/client-web@npm:1.12.1"
+"@clickhouse/client-common@npm:1.18.3-head.c4cfb6f.1, @clickhouse/client-common@npm:head":
+  version: 1.18.3-head.c4cfb6f.1
+  resolution: "@clickhouse/client-common@npm:1.18.3-head.c4cfb6f.1"
+  checksum: 10c0/08f504542450cfcc53090e00d29cbd54658c854c9a3639c03d6ea6cddd7a1b3ea7978b10797d06ec4e74aab17660225fd0a9a01844e4547ac5ab5745e40bb249
+  languageName: node
+  linkType: hard
+
+"@clickhouse/client-web@npm:head":
+  version: 1.18.3-head.c4cfb6f.1
+  resolution: "@clickhouse/client-web@npm:1.18.3-head.c4cfb6f.1"
   dependencies:
-    "@clickhouse/client-common": "npm:1.12.1"
-  checksum: 10c0/3e374288a2e0e4ced37220638629612dc8d6ced66490c2bdac136ddb887d5e108b9992b26d57911d6007bd47eaf7a754caa48e3afdfdb44cbd4f07bec7900995
+    "@clickhouse/client-common": "npm:1.18.3-head.c4cfb6f.1"
+  checksum: 10c0/32398abce10134064da822c8db495adfda06d8875a6eed6f3ccea479edf551f1261afaccf213112557058c675b1f3e840c912a21e3684d9f3201835eb90513ec
   languageName: node
   linkType: hard
 
@@ -3041,6 +3048,15 @@ __metadata:
   dependencies:
     "@clickhouse/client-common": "npm:1.12.1"
   checksum: 10c0/4d715accad5ba74248c63fab83469ebeffc16d7cc5050ee7e5f9e7dd48d0e7c4b79517bf5917f2a60599960aee997e5d8341c480d056286f5d9a86530623211f
+  languageName: node
+  linkType: hard
+
+"@clickhouse/client@npm:head":
+  version: 1.18.3-head.c4cfb6f.1
+  resolution: "@clickhouse/client@npm:1.18.3-head.c4cfb6f.1"
+  dependencies:
+    "@clickhouse/client-common": "npm:1.18.3-head.c4cfb6f.1"
+  checksum: 10c0/4a1c709705c4c8f9049256e6690f08e58575edece4041c62e925c0c93c11b8d29868a2db266b630d7fa6741533ee9607a8a3ab30ebcdc6b31c2927b6d485ee73
   languageName: node
   linkType: hard
 
@@ -4521,9 +4537,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@hyperdx/common-utils@workspace:packages/common-utils"
   dependencies:
-    "@clickhouse/client": "npm:^1.12.1"
-    "@clickhouse/client-common": "npm:^1.12.1"
-    "@clickhouse/client-web": "npm:^1.12.1"
+    "@clickhouse/client": "npm:head"
+    "@clickhouse/client-common": "npm:head"
+    "@clickhouse/client-web": "npm:head"
     "@hyperdx/lucene": "npm:^3.1.1"
     "@types/hyperdx__lucene": "npm:@types/lucene@*"
     "@types/jest": "npm:^29.5.14"
