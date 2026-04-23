@@ -11,7 +11,9 @@ import {
   convertExternalTilesToInternal,
   convertToExternalDashboard,
   createDashboardBodySchema,
+  getInvalidOnClickSearchSources,
   getMissingConnections,
+  getMissingOnClickDashboards,
   getMissingSources,
   resolveSavedQueryLanguage,
   updateDashboardBodySchema,
@@ -112,9 +114,16 @@ async function createDashboard({
   const { tiles, filters } = parsed.data;
   const tilesWithId = tiles as ExternalDashboardTileWithId[];
 
-  const [missingSources, missingConnections] = await Promise.all([
+  const [
+    missingSources,
+    missingConnections,
+    missingOnClickDashboards,
+    invalidOnClickSearchSources,
+  ] = await Promise.all([
     getMissingSources(teamId, tilesWithId, filters),
     getMissingConnections(teamId, tilesWithId),
+    getMissingOnClickDashboards(teamId, tilesWithId),
+    getInvalidOnClickSearchSources(teamId, tilesWithId),
   ]);
   if (missingSources.length > 0) {
     return {
@@ -134,6 +143,32 @@ async function createDashboard({
         {
           type: 'text' as const,
           text: `Could not find connection IDs: ${missingConnections.join(', ')}`,
+        },
+      ],
+    };
+  }
+  if (missingOnClickDashboards.length > 0) {
+    return {
+      isError: true,
+      content: [
+        {
+          type: 'text' as const,
+          text: `Could not find onClick dashboard IDs: ${missingOnClickDashboards.join(
+            ', ',
+          )}`,
+        },
+      ],
+    };
+  }
+  if (invalidOnClickSearchSources.length > 0) {
+    return {
+      isError: true,
+      content: [
+        {
+          type: 'text' as const,
+          text: `The following onClick search source IDs are not log or trace sources: ${invalidOnClickSearchSources.join(
+            ', ',
+          )}`,
         },
       ],
     };
@@ -221,9 +256,16 @@ async function updateDashboard({
   const { tiles, filters } = parsed.data;
   const tilesWithId = tiles as ExternalDashboardTileWithId[];
 
-  const [missingSources, missingConnections] = await Promise.all([
+  const [
+    missingSources,
+    missingConnections,
+    missingOnClickDashboards,
+    invalidOnClickSearchSources,
+  ] = await Promise.all([
     getMissingSources(teamId, tilesWithId, filters),
     getMissingConnections(teamId, tilesWithId),
+    getMissingOnClickDashboards(teamId, tilesWithId),
+    getInvalidOnClickSearchSources(teamId, tilesWithId),
   ]);
   if (missingSources.length > 0) {
     return {
@@ -243,6 +285,32 @@ async function updateDashboard({
         {
           type: 'text' as const,
           text: `Could not find connection IDs: ${missingConnections.join(', ')}`,
+        },
+      ],
+    };
+  }
+  if (missingOnClickDashboards.length > 0) {
+    return {
+      isError: true,
+      content: [
+        {
+          type: 'text' as const,
+          text: `Could not find onClick dashboard IDs: ${missingOnClickDashboards.join(
+            ', ',
+          )}`,
+        },
+      ],
+    };
+  }
+  if (invalidOnClickSearchSources.length > 0) {
+    return {
+      isError: true,
+      content: [
+        {
+          type: 'text' as const,
+          text: `The following onClick search source IDs are not log or trace sources: ${invalidOnClickSearchSources.join(
+            ', ',
+          )}`,
         },
       ],
     };

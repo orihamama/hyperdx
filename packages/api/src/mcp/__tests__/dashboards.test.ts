@@ -415,6 +415,75 @@ describe('MCP Dashboard Tools', () => {
       const output = JSON.parse(getFirstText(result));
       expect(output.tiles).toHaveLength(1);
     });
+
+    it('should create a table tile with a valid onClick link-out', async () => {
+      const sourceId = traceSource._id.toString();
+      const targetDashboard = await new Dashboard({
+        name: 'OnClick Target',
+        tiles: [],
+        team: team._id,
+      }).save();
+
+      const result = await callTool(client, 'hyperdx_save_dashboard', {
+        name: 'Dashboard with onClick',
+        tiles: [
+          {
+            name: 'Clickable Table',
+            config: {
+              displayType: 'table',
+              sourceId,
+              select: [{ aggFn: 'count' }],
+              onClick: {
+                type: 'dashboard',
+                target: {
+                  mode: 'id',
+                  id: targetDashboard._id.toString(),
+                },
+                whereLanguage: 'sql',
+              },
+            },
+          },
+        ],
+      });
+
+      expect(result.isError).toBeFalsy();
+      const output = JSON.parse(getFirstText(result));
+      expect(output.tiles[0].config.onClick).toEqual({
+        type: 'dashboard',
+        target: {
+          mode: 'id',
+          id: targetDashboard._id.toString(),
+        },
+        whereLanguage: 'sql',
+      });
+    });
+
+    it('should return error when onClick references a non-existent dashboard', async () => {
+      const sourceId = traceSource._id.toString();
+      const fakeDashboardId = '000000000000000000000000';
+
+      const result = await callTool(client, 'hyperdx_save_dashboard', {
+        name: 'Dashboard with broken onClick',
+        tiles: [
+          {
+            name: 'Clickable Table',
+            config: {
+              displayType: 'table',
+              sourceId,
+              select: [{ aggFn: 'count' }],
+              onClick: {
+                type: 'dashboard',
+                target: { mode: 'id', id: fakeDashboardId },
+                whereLanguage: 'sql',
+              },
+            },
+          },
+        ],
+      });
+
+      expect(result.isError).toBe(true);
+      expect(getFirstText(result)).toContain('onClick dashboard');
+    });
   });
 
   describe('hyperdx_delete_dashboard', () => {

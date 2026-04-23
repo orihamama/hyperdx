@@ -680,7 +680,7 @@ const OnClickTargetSchema = z.discriminatedUnion('mode', [
 ]);
 export type OnClickTarget = z.infer<typeof OnClickTargetSchema>;
 
-const OnClickSearchSchema = z.object({
+export const OnClickSearchSchema = z.object({
   type: z.literal('search'),
   target: OnClickTargetSchema,
   whereTemplate: z.string().optional(),
